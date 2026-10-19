@@ -3,8 +3,57 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Rubik Solver — learn the 3×3 beginner method</title>
-  <meta name="description" content="An interactive, step-by-step guide to solving the 3×3 Rubik's Cube with the beginner layer-by-layer method." />
+  <title>Rubik Solver — learn to solve the 3×3 Rubik's Cube, step by step</title>
+  <meta name="description" content="Learn to solve the Rubik's Cube with the beginner layer-by-layer method. 7 steps, each with an interactive 3D cube that shows every move. In English and Spanish." />
+  <meta name="keywords" content="rubik's cube, how to solve rubik's cube, beginner method, 3x3, algorithms, cubo rubik, resolver cubo rubik, método principiante" />
+  <meta name="author" content="Patricio Mase" />
+  <meta name="theme-color" content="#cde6f6" />
+  <link rel="canonical" href="https://patriciomase.github.io/rubik-solver/" />
+
+  <!-- Open Graph (WhatsApp, Facebook, LinkedIn, Slack…) -->
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Rubik Solver" />
+  <meta property="og:url" content="https://patriciomase.github.io/rubik-solver/" />
+  <meta property="og:title" content="Rubik Solver — solve the cube, one layer at a time" />
+  <meta property="og:description" content="7 steps, each with an interactive 3D cube that shows every move. Beginner method, English & Spanish." />
+  <meta property="og:image" content="https://patriciomase.github.io/rubik-solver/og-image.png" />
+  <meta property="og:image:secure_url" content="https://patriciomase.github.io/rubik-solver/og-image.png" />
+  <meta property="og:image:type" content="image/png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="A 3D Rubik's Cube next to the text: Solve the cube, one layer at a time." />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:locale:alternate" content="es_ES" />
+
+  <!-- Twitter / X -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Rubik Solver — solve the cube, one layer at a time" />
+  <meta name="twitter:description" content="7 steps, each with an interactive 3D cube that shows every move." />
+  <meta name="twitter:image" content="https://patriciomase.github.io/rubik-solver/og-image.png" />
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "HowTo",
+      "name": "How to solve a 3×3 Rubik's Cube (beginner method)",
+      "description": "Solve the Rubik's Cube layer by layer in 7 steps.",
+      "url": "https://patriciomase.github.io/rubik-solver/",
+      "image": "https://patriciomase.github.io/rubik-solver/og-image.png",
+      "inLanguage": ["en", "es"],
+      "totalTime": "PT1H",
+      "supply": [{ "@type": "HowToSupply", "name": "3×3 Rubik's Cube" }],
+      "step": [
+        { "@type": "HowToStep", "position": 1, "name": "The white cross", "url": "https://patriciomase.github.io/rubik-solver/#step-cross", "text": "Build a white cross on the bottom with matching side colors." },
+        { "@type": "HowToStep", "position": 2, "name": "White corners", "url": "https://patriciomase.github.io/rubik-solver/#step-corners", "text": "Insert each white corner by repeating R U R' U'." },
+        { "@type": "HowToStep", "position": 3, "name": "Middle layer edges", "url": "https://patriciomase.github.io/rubik-solver/#step-middle", "text": "Insert middle edges with U R U' R' U' F' U F or U' L' U L U F U' F'." },
+        { "@type": "HowToStep", "position": 4, "name": "Yellow cross", "url": "https://patriciomase.github.io/rubik-solver/#step-ycross", "text": "Make a yellow cross on top with F R U R' U' F'." },
+        { "@type": "HowToStep", "position": 5, "name": "Match the yellow edges", "url": "https://patriciomase.github.io/rubik-solver/#step-yedges", "text": "Align the yellow edges with R U R' U R U2 R'." },
+        { "@type": "HowToStep", "position": 6, "name": "Place the yellow corners", "url": "https://patriciomase.github.io/rubik-solver/#step-ycorners", "text": "Move the corners into place with U R U' L' U R' U' L." },
+        { "@type": "HowToStep", "position": 7, "name": "Twist the last corners", "url": "https://patriciomase.github.io/rubik-solver/#step-twist", "text": "Orient each corner by repeating R' D' R D." }
+      ]
+    }
+  </script>
+  <link rel="apple-touch-icon" href="og-image.png" />
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3E%3Crect width='30' height='30' rx='7' fill='%232f3946'/%3E%3Cg fill='%23a8d3f0'%3E%3Crect x='3' y='3' width='7' height='7' rx='2'/%3E%3Crect x='11.5' y='3' width='7' height='7' rx='2' fill='%23ffe066'/%3E%3Crect x='20' y='3' width='7' height='7' rx='2'/%3E%3Crect x='3' y='11.5' width='7' height='7' rx='2' fill='%23ffe066'/%3E%3Crect x='11.5' y='11.5' width='7' height='7' rx='2'/%3E%3Crect x='20' y='11.5' width='7' height='7' rx='2' fill='%23ffe066'/%3E%3Crect x='3' y='20' width='7' height='7' rx='2'/%3E%3Crect x='11.5' y='20' width='7' height='7' rx='2' fill='%23ffe066'/%3E%3Crect x='20' y='20' width='7' height='7' rx='2'/%3E%3C/g%3E%3C/svg%3E" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -34,9 +83,9 @@
   <main id="top">
     <section class="hero">
       <div class="hero-text">
-        <p class="eyebrow" data-i18n="heroEyebrow"></p>
-        <h1 data-i18n-html="heroTitle"></h1>
-        <p class="lead" data-i18n="heroLead"></p>
+        <p class="eyebrow" data-i18n="heroEyebrow">3×3 · Beginner method</p>
+        <h1 data-i18n-html="heroTitle">Solve the cube,<br><em>one layer</em> at a time.</h1>
+        <p class="lead" data-i18n="heroLead">Seven short steps, each with a live 3D cube that shows you exactly which moves to make. Drag it, slow it down, step through it move by move.</p>
         <div class="hero-actions">
           <a href="#notation" class="btn btn-primary" data-i18n="heroCta"></a>
           <a href="#step-cross" class="btn btn-ghost" data-i18n="heroSkip"></a>

@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://patriciomase.github.io/rubik-solver/sitemap.xml

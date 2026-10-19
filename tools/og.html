@@ -1,0 +1,27 @@
+<!doctype html>
+<!-- Source for og-image.png. Regenerate: serve repo root, screenshot this page at 1200x630. -->
+<html><head><meta charset="utf-8">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,800&family=Inter:wght@500&family=JetBrains+Mono:wght@600&display=swap" rel="stylesheet">
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"}}</script>
+<style>
+  body{margin:0;width:1200px;height:630px;overflow:hidden;font-family:Inter,sans-serif;color:#233040;
+    background:radial-gradient(700px 500px at 85% 20%,#cde6f6,transparent 65%),radial-gradient(600px 400px at 0% 100%,#e4f1fa,transparent 60%),#f6f7f9;
+    display:grid;grid-template-columns:620px 1fr;align-items:center}
+  .t{padding-left:72px}
+  .e{font:600 18px 'JetBrains Mono';letter-spacing:.14em;color:#3e8ac4;text-transform:uppercase;margin:0 0 18px}
+  h1{font:800 76px/1 'Bricolage Grotesque';letter-spacing:-.03em;margin:0}
+  h1 em{font-style:normal;color:#3e8ac4}
+  p{font-size:24px;color:#4d5b6c;margin:26px 0 0}
+  .u{font:600 18px 'JetBrains Mono';color:#8793a1;margin-top:40px}
+  #c{width:580px;height:630px}
+</style></head><body>
+<div class="t"><p class="e">3×3 · Beginner method</p><h1>Solve the cube, <em>one layer</em> at a time.</h1>
+<p>7 steps with interactive 3D demos.</p><div class="u">patriciomase.github.io/rubik-solver</div></div>
+<div id="c"></div>
+<script type="module">
+import * as C from '../js/cube.js'; import { CubeView } from '../js/view.js';
+const v = new CubeView(document.getElementById('c'), { interactive:false, cameraPos:[6.4,5.4,8.6] });
+v.setState(C.applyAlg(C.solved(), "R U R' F2 U' L D2 B'"));
+v.root.rotation.y = -0.25;
+setTimeout(()=>{ v.requestRender(); document.body.dataset.ready='1'; }, 400);
+</script></body></html>
