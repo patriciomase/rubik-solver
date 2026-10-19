@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Rubik Solver — learn the 3×3 beginner method</title>
+  <meta name="description" content="An interactive, step-by-step guide to solving the 3×3 Rubik's Cube with the beginner layer-by-layer method." />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3E%3Crect width='30' height='30' rx='7' fill='%232f3946'/%3E%3Cg fill='%23a8d3f0'%3E%3Crect x='3' y='3' width='7' height='7' rx='2'/%3E%3Crect x='11.5' y='3' width='7' height='7' rx='2' fill='%23ffe066'/%3E%3Crect x='20' y='3' width='7' height='7' rx='2'/%3E%3Crect x='3' y='11.5' width='7' height='7' rx='2' fill='%23ffe066'/%3E%3Crect x='11.5' y='11.5' width='7' height='7' rx='2'/%3E%3Crect x='20' y='11.5' width='7' height='7' rx='2' fill='%23ffe066'/%3E%3Crect x='3' y='20' width='7' height='7' rx='2'/%3E%3Crect x='11.5' y='20' width='7' height='7' rx='2' fill='%23ffe066'/%3E%3Crect x='20' y='20' width='7' height='7' rx='2'/%3E%3C/g%3E%3C/svg%3E" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+        "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+      }
+    }
+  </script>
+</head>
+<body>
+  <header class="topbar">
+    <a href="#top" class="brand">
+      <span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>
+      <span>rubik<b>solver</b></span>
+    </a>
+    <nav class="steps-nav" id="stepsNav" aria-label="Steps"></nav>
+    <div class="lang" role="group" aria-label="Language">
+      <button data-lang="en">EN</button><button data-lang="es">ES</button>
+    </div>
+  </header>
+
+  <main id="top">
+    <section class="hero">
+      <div class="hero-text">
+        <p class="eyebrow" data-i18n="heroEyebrow"></p>
+        <h1 data-i18n-html="heroTitle"></h1>
+        <p class="lead" data-i18n="heroLead"></p>
+        <div class="hero-actions">
+          <a href="#notation" class="btn btn-primary" data-i18n="heroCta"></a>
+          <a href="#step-cross" class="btn btn-ghost" data-i18n="heroSkip"></a>
+        </div>
+        <ul class="hero-stats">
+          <li><b>7</b><span data-i18n="statSteps"></span></li>
+          <li><b>7</b><span data-i18n="statAlgs"></span></li>
+          <li><b>~1h</b><span data-i18n="statTime"></span></li>
+        </ul>
+      </div>
+      <div class="hero-cube">
+        <div class="halo"></div>
+        <div class="cube-stage" id="heroCube"></div>
+        <p class="hint" data-i18n="dragHint"></p>
+      </div>
+    </section>
+
+    <section class="section notation" id="notation">
+      <div class="section-head">
+        <span class="step-num">00</span>
+        <div>
+          <p class="eyebrow" data-i18n="notationEyebrow"></p>
+          <h2 data-i18n="notationTitle"></h2>
+        </div>
+      </div>
+      <div class="notation-grid">
+        <div class="notation-copy">
+          <p data-i18n-html="notationBody"></p>
+          <ul class="face-legend" id="faceLegend"></ul>
+          <p class="small" data-i18n-html="notationKeys"></p>
+        </div>
+        <div class="card player">
+          <div class="cube-stage" id="padCube"></div>
+          <div class="move-pad" id="movePad"></div>
+          <div class="pad-actions">
+            <button class="btn btn-small" id="padScramble" data-i18n="scramble"></button>
+            <button class="btn btn-small btn-ghost" id="padReset" data-i18n="reset"></button>
+            <span class="pad-history" id="padHistory"></span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div id="steps"></div>
+
+    <section class="section finale" id="finale">
+      <div class="finale-inner">
+        <div class="cube-stage" id="finaleCube"></div>
+        <div>
+          <p class="eyebrow" data-i18n="finaleEyebrow"></p>
+          <h2 data-i18n="finaleTitle"></h2>
+          <p class="lead" data-i18n="finaleBody"></p>
+          <div class="cheatsheet" id="cheatsheet"></div>
+          <a href="#top" class="btn btn-primary" data-i18n="backTop"></a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p data-i18n-html="footer"></p>
+  </footer>
+
+  <template id="stepTpl">
+    <section class="section step">
+      <div class="section-head">
+        <span class="step-num"></span>
+        <div>
+          <p class="eyebrow"></p>
+          <h2></h2>
+          <p class="tagline"></p>
+        </div>
+      </div>
+      <div class="step-grid">
+        <div class="step-copy">
+          <p class="body"></p>
+          <div class="tip"><span class="tip-icon" aria-hidden="true">💡</span><p></p></div>
+          <label class="done-toggle"><input type="checkbox" /><span></span></label>
+        </div>
+        <div class="card player">
+          <div class="case-tabs" role="tablist"></div>
+          <div class="stage-wrap">
+            <div class="cube-stage"></div>
+            <button class="focus-toggle" aria-pressed="true"></button>
+            <span class="drag-chip"></span>
+          </div>
+          <div class="progress"><span></span></div>
+          <div class="alg"></div>
+          <div class="controls">
+            <button class="ctl" data-act="reset" aria-label="Reset">⟲</button>
+            <button class="ctl" data-act="prev" aria-label="Previous move">‹</button>
+            <button class="ctl ctl-play" data-act="play" aria-label="Play">▶</button>
+            <button class="ctl" data-act="next" aria-label="Next move">›</button>
+            <div class="speed" role="group" aria-label="Speed">
+              <button data-speed="0.5">½×</button><button data-speed="1" class="on">1×</button><button data-speed="2">2×</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </template>
+
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>
