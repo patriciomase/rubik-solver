@@ -1,22 +1,15 @@
 import * as C from './cube.js';
 import { CubeView } from './view.js';
-import { STEPS, caseMoves } from './steps.js';
 import { UI, initialLang, saveLang } from './i18n.js';
+
+const METHOD = document.body.dataset.method || 'beginner';
+const { STEPS } = await import(METHOD === 'cfop' ? './steps-cfop.js' : './steps.js');
+const GROUPS = { C: 'Cross', F: 'F2L', O: 'OLL', P: 'PLL' };
 
 let lang = initialLang();
 const t = (k) => UI[lang][k];
 const pick = (obj) => obj[lang];
 const $ = (sel, el = document) => el.querySelector(sel);
-
-const CHEATSHEET = [
-  ['cross', "F2 · U' R' F R"],
-  ['corners', "R U R' U'"],
-  ['middle', "U R U' R' U' F' U F · U' L' U L U F U' F'"],
-  ['ycross', "F R U R' U' F'"],
-  ['yedges', "R U R' U R U2 R'"],
-  ['ycorners', "U R U' L' U R' U' L"],
-  ['twist', "R' D' R D"],
-];
 
 const algHTML = (alg) => alg.split(' ').map((m) => `<span class="mv">${m}</span>`).join(' ');
 
@@ -34,6 +27,7 @@ class Player {
     this.algEl = $('.alg', section);
     this.bar = $('.progress span', section);
     this.playBtn = $('[data-act="play"]', section);
+    this.hintEl = $('.case-hint', section);
 
     section.querySelectorAll('.ctl').forEach((b) => b.addEventListener('click', () => this[b.dataset.act]()));
     section.querySelectorAll('[data-speed]').forEach((b) =>
@@ -78,11 +72,23 @@ class Player {
       b.classList.toggle('on', bi === i);
       b.setAttribute('aria-selected', String(bi === i));
     });
+    this.renderHint();
     this.renderAlg();
     if (this.view) {
       this.view.setState(this.start);
       this.applyFocus();
     }
+  }
+
+  renderHint() {
+    const cs = this.step.cases[this.caseIdx];
+    if (this.step.showScramble) {
+      const scramble = C.invertAlg(this.moves).map((m) => m.token).join(' ');
+      this.hintEl.innerHTML = `<b>${t('scrambleLabel')}</b> <span class="alg-inline">${scramble}</span>`;
+    } else {
+      this.hintEl.textContent = cs.hint ? pick(cs.hint) : '';
+    }
+    this.hintEl.hidden = !this.hintEl.innerHTML;
   }
 
   renderAlg() {
@@ -164,7 +170,7 @@ class Player {
     const s = this.section;
     const step = this.step;
     $('.step-num', s).textContent = String(index + 1).padStart(2, '0');
-    $('.eyebrow', s).textContent = `${t('step')} ${index + 1}`;
+    $('.eyebrow', s).textContent = `${t('step')} ${index + 1}` + (GROUPS[step.group] ? ` · ${GROUPS[step.group]}` : '');
     $('h2', s).textContent = pick(step.title);
     $('.tagline', s).textContent = pick(step.tagline);
     $('.body', s).innerHTML = pick(step.body);
@@ -184,6 +190,7 @@ class Player {
       b.textContent = pick(step.cases[i].name);
       b.classList.toggle('on', i === this.caseIdx);
     });
+    if (this.moves) this.renderHint();
     this.applyFocus();
   }
 }
@@ -206,14 +213,15 @@ const players = STEPS.map((step, i) => {
   nav.appendChild(a);
 
   const box = $('.done-toggle input', section);
-  try { box.checked = localStorage.getItem(`done-${step.id}`) === '1'; } catch {}
+  const doneKey = METHOD === 'beginner' ? `done-${step.id}` : `done-${METHOD}-${step.id}`;
+  try { box.checked = localStorage.getItem(doneKey) === '1'; } catch {}
   const markDone = () => {
     a.classList.toggle('learned', box.checked);
     section.classList.toggle('learned', box.checked);
   };
   markDone();
   box.addEventListener('change', () => {
-    try { localStorage.setItem(`done-${step.id}`, box.checked ? '1' : '0'); } catch {}
+    try { localStorage.setItem(doneKey, box.checked ? '1' : '0'); } catch {}
     markDone();
   });
 
@@ -223,10 +231,12 @@ const players = STEPS.map((step, i) => {
 // Face legend + move pad
 const legend = $('#faceLegend');
 const pad = $('#movePad');
-['U', 'D', 'R', 'L', 'F', 'B'].forEach((f) => {
+if (legend) ['U', 'D', 'R', 'L', 'F', 'B'].forEach((f) => {
   legend.insertAdjacentHTML('beforeend', `<li><span class="face-dot face-${f}">${f}</span><span data-face="${f}"></span></li>`);
 });
-['U', 'D', 'R', 'L', 'F', 'B', 'y'].forEach((f) => {
+const padKeys = (pad.dataset.keys || 'U D R L F B y').split(' ');
+pad.style.gridTemplateColumns = `repeat(${padKeys.length}, 1fr)`;
+padKeys.forEach((f) => {
   pad.insertAdjacentHTML('beforeend', `<div class="pad-col"><button class="key" data-mv="${f}">${f}</button><button class="key key-prime" data-mv="${f}'">${f}'</button></div>`);
 });
 
@@ -237,10 +247,19 @@ function renderStatic() {
   document.querySelectorAll('[data-face]').forEach((el) => (el.textContent = t('faces')[el.dataset.face]));
   document.querySelectorAll('[data-lang]').forEach((b) => b.classList.toggle('on', b.dataset.lang === lang));
   players.forEach((p, i) => p.renderText(i));
-  $('#cheatsheet').innerHTML = CHEATSHEET.map(([id, alg], i) => {
-    const step = STEPS.find((s) => s.id === id);
-    return `<a class="cheat" href="#step-${id}"><span class="cheat-n">${i + 1}</span><span class="cheat-t">${pick(step.title)}</span><span class="cheat-a">${algHTML(alg)}</span></a>`;
-  }).join('');
+  const cmp = $('#compare');
+  if (cmp) {
+    cmp.innerHTML = `<thead><tr><th></th><th>${t('methodBeginner')}</th><th>CFOP</th></tr></thead><tbody>${t('compareRows')
+      .map((r) => `<tr><th>${r[0]}</th><td>${r[1]}</td><td>${r[2]}</td></tr>`)
+      .join('')}</tbody>`;
+  }
+  $('#cheatsheet').innerHTML = STEPS.flatMap((step, i) =>
+    (step.cheat || []).map((ch, j) => {
+      const name = ch.name ? `<small>${pick(ch.name)}</small>` : '';
+      const label = j ? name : `${pick(step.title)}${name}`;
+      return `<a class="cheat${j ? ' cheat-cont' : ''}" href="#step-${step.id}"><span class="cheat-n">${j ? '' : i + 1}</span><span class="cheat-t">${label}</span><span class="cheat-a">${algHTML(ch.alg)}</span></a>`;
+    }),
+  ).join('');
 }
 document.querySelectorAll('[data-lang]').forEach((b) =>
   b.addEventListener('click', () => {
@@ -266,8 +285,20 @@ function randomScramble(n) {
   return out;
 }
 const wait = (ms) => new Promise((r) => setTimeout(r, ms));
+// On the CFOP page the hero replays the full example solve instead.
+const example = STEPS.find((s) => s.showScramble)?.cases[0];
 (async function heroLoop() {
   await wait(700);
+  if (example) {
+    const sol = C.parseAlg(example.segments.map((sg) => sg.alg).join(' '));
+    for (;;) {
+      hero.setState(C.applyAlg(C.solved(), C.invertAlg(sol)));
+      await wait(1400);
+      hero.speed = 3.4;
+      for (const mv of sol) await hero.animate(mv);
+      await wait(3000);
+    }
+  }
   for (;;) {
     const scr = randomScramble(18);
     hero.speed = 3.2;

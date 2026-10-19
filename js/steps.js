@@ -21,6 +21,7 @@ const isF2LOrCenter = (h) => h[1] <= 0 || h.filter((v) => v).length === 1;
 export const STEPS = [
   {
     id: 'cross',
+    cheat: [{ name: { en: 'White up', es: 'Blanco arriba' }, alg: 'F2' }, { name: { en: 'White out', es: 'Blanco afuera' }, alg: "U' R' F R" }],
     goal: 'cross',
     below: true,
     focus: isDEdgeOrCenter,
@@ -43,6 +44,7 @@ export const STEPS = [
   },
   {
     id: 'corners',
+    cheat: [{ alg: SEXY }],
     goal: 'firstLayer',
     below: true,
     focus: isDLayerOrCenter,
@@ -65,6 +67,7 @@ export const STEPS = [
   },
   {
     id: 'middle',
+    cheat: [{ name: { en: 'Right', es: 'Derecha' }, alg: RIGHT }, { name: { en: 'Left', es: 'Izquierda' }, alg: LEFT }],
     goal: 'f2l',
     focus: isF2LOrCenter,
     noise: `${SUNE} U ${FRURUF} ${NIKLAS} U'`,
@@ -85,6 +88,7 @@ export const STEPS = [
   },
   {
     id: 'ycross',
+    cheat: [{ alg: FRURUF }],
     goal: 'yellowCross',
     noise: `${SUNE} U ${NIKLAS} U2 ${SUNE}`,
     title: { en: 'Yellow cross', es: 'Cruz amarilla' },
@@ -105,6 +109,7 @@ export const STEPS = [
   },
   {
     id: 'yedges',
+    cheat: [{ alg: SUNE }],
     goal: 'yellowEdges',
     noise: `${NIKLAS} ${TWIST} ${TWIST} U ${TWIST} ${TWIST} ${TWIST} ${TWIST} U'`,
     title: { en: 'Match the yellow edges', es: 'Ubica las aristas amarillas' },
@@ -124,6 +129,7 @@ export const STEPS = [
   },
   {
     id: 'ycorners',
+    cheat: [{ alg: NIKLAS }],
     goal: 'cornersPlaced',
     noise: `${TWIST} ${TWIST} U ${TWIST} ${TWIST} ${TWIST} ${TWIST} U'`,
     title: { en: 'Place the yellow corners', es: 'Ubica las esquinas amarillas' },
@@ -144,6 +150,7 @@ export const STEPS = [
   },
   {
     id: 'twist',
+    cheat: [{ alg: TWIST }],
     goal: 'solved',
     noise: '',
     title: { en: 'Twist the last corners', es: 'Gira las últimas esquinas' },
@@ -168,7 +175,3 @@ export const STEPS = [
     ],
   },
 ];
-
-export function caseMoves(c) {
-  return c.segments.map((s) => s.alg).join(' ');
-}

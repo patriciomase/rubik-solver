@@ -123,9 +123,12 @@ export class CubeView {
 
   setFocus(pred) {
     this.focus = pred;
+    // pred(home, stickerColor) → keep color; lets a step dim whole pieces or single stickers.
     this.state.cubies.forEach((c, i) => {
-      const dim = pred && !pred(c.home);
-      for (const s of this.meshes[i].userData.stickers) s.material = stickerMat(dim ? DIM : STICKER[s.userData.color]);
+      for (const s of this.meshes[i].userData.stickers) {
+        const dim = pred && !pred(c.home, s.userData.color);
+        s.material = stickerMat(dim ? DIM : STICKER[s.userData.color]);
+      }
     });
     this.requestRender();
   }

@@ -1,5 +1,5 @@
 <!doctype html>
-<!-- Source for og-image.png. Regenerate: serve repo root, screenshot this page at 1200x630. -->
+<!-- Source for og-image.png (and og-image-cfop.png with ?m=cfop). Regenerate: serve repo root, screenshot at 1200x630. -->
 <html><head><meta charset="utf-8">
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,800&family=Inter:wght@500&family=JetBrains+Mono:wght@600&display=swap" rel="stylesheet">
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"}}</script>
@@ -19,7 +19,13 @@
 <p>7 steps with interactive 3D demos.</p><div class="u">patriciomase.github.io/rubik-solver</div></div>
 <div id="c"></div>
 <script type="module">
-import * as C from '../js/cube.js'; import { CubeView } from '../js/view.js';
+import * as C from '../js/cube.js';
+if (new URLSearchParams(location.search).get('m') === 'cfop') {
+  document.querySelector('.e').textContent = '3×3 · CFOP method';
+  document.querySelector('h1').innerHTML = 'Learn CFOP: <em>half the moves</em>.';
+  document.querySelector('.t p:not(.e)').textContent = 'F2L, OLL & PLL — 16 algorithms, all in 3D.';
+  document.querySelector('.u').textContent = 'patriciomase.github.io/rubik-solver/cfop';
+} import { CubeView } from '../js/view.js';
 const v = new CubeView(document.getElementById('c'), { interactive:false, cameraPos:[6.4,5.4,8.6] });
 v.setState(C.applyAlg(C.solved(), "R U R' F2 U' L D2 B'"));
 v.root.rotation.y = -0.25;

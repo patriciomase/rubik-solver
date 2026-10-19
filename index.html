@@ -68,13 +68,16 @@
     }
   </script>
 </head>
-<body>
+<body data-method="beginner">
   <header class="topbar">
     <a href="#top" class="brand">
       <span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>
       <span>rubik<b>solver</b></span>
     </a>
     <nav class="steps-nav" id="stepsNav" aria-label="Steps"></nav>
+    <nav class="method" aria-label="Method">
+      <a href="./" class="on" aria-current="page" data-i18n="methodBeginner">Beginner</a><a href="cfop.html" data-i18n="methodCfop">CFOP</a>
+    </nav>
     <div class="lang" role="group" aria-label="Language">
       <button data-lang="en">EN</button><button data-lang="es">ES</button>
     </div>
@@ -139,9 +142,14 @@
           <h2 data-i18n="finaleTitle"></h2>
           <p class="lead" data-i18n="finaleBody"></p>
           <div class="cheatsheet" id="cheatsheet"></div>
-          <a href="#top" class="btn btn-primary" data-i18n="backTop"></a>
+          <a href="#top" class="btn btn-ghost" data-i18n="backTop"></a>
         </div>
       </div>
+      <a class="next-level" href="cfop.html">
+        <span class="next-letters" aria-hidden="true"><i>C</i><i>F</i><i>O</i><i>P</i></span>
+        <span class="next-copy"><b data-i18n="nextLevelTitle"></b><span data-i18n="nextLevelBody"></span></span>
+        <span class="btn btn-primary" data-i18n="nextLevelCta"></span>
+      </a>
     </section>
   </main>
 
@@ -167,6 +175,7 @@
         </div>
         <div class="card player">
           <div class="case-tabs" role="tablist"></div>
+          <p class="case-hint" hidden></p>
           <div class="stage-wrap">
             <div class="cube-stage"></div>
             <button class="focus-toggle" aria-pressed="true"></button>
